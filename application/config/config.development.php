@@ -61,12 +61,12 @@ return array(
 	 * DB_PORT The mysql port, 3306 by default (?), find out via phpinfo() and look for mysqli.default_port.
 	 * DB_CHARSET The charset, necessary for security reasons. Check Database.php class for more info.
 	 */
-	'DB_TYPE' => 'mysql',
+	'DB_TYPE' => 'pgsql',
 	'DB_HOST' => '127.0.0.1',
 	'DB_NAME' => 'huge',
-	'DB_USER' => 'root',
-	'DB_PASS' => '12345678',
-	'DB_PORT' => '3306',
+	'DB_USER' => 'huge',
+	'DB_PASS' => 'password',
+	'DB_PORT' => '5432',
 	'DB_CHARSET' => 'utf8',
 	/**
 	 * Configuration for: Captcha size
