@@ -209,7 +209,7 @@ class AvatarModel
      */
     public static function deleteAvatar($userId)
     {
-        if (!ctype_digit($userId)) {
+        if (!ctype_digit($userId) and !is_int($userId)) {
             Session::add("feedback_negative", Text::get("FEEDBACK_AVATAR_IMAGE_DELETE_FAILED"));
             return false;
         }
@@ -219,7 +219,7 @@ class AvatarModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sth = $database->prepare("UPDATE users SET user_has_avatar = 0 WHERE user_id = :user_id");
+        $sth = $database->prepare("UPDATE users SET user_has_avatar = FALSE WHERE user_id = :user_id");
         $sth->bindValue(":user_id", (int)$userId, PDO::PARAM_INT);
         $sth->execute();
 
