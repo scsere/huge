@@ -80,7 +80,7 @@ class NoteModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE notes SET note_text = :note_text WHERE note_id = :note_id AND user_id = :user_id LIMIT 1";
+        $sql = "UPDATE notes SET note_text = :note_text WHERE note_id = :note_id AND user_id = :user_id";
         $query = $database->prepare($sql);
         $query->execute(array(':note_id' => $note_id, ':note_text' => $note_text, ':user_id' => Session::get('user_id')));
 
@@ -105,7 +105,7 @@ class NoteModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "DELETE FROM notes WHERE note_id = :note_id AND user_id = :user_id LIMIT 1";
+        $sql = "DELETE FROM notes WHERE note_id = :note_id AND user_id = :user_id";
         $query = $database->prepare($sql);
         $query->execute(array(':note_id' => $note_id, ':user_id' => Session::get('user_id')));
 

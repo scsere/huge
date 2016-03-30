@@ -57,7 +57,7 @@ class AdminModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("UPDATE users SET user_suspension_timestamp = :user_suspension_timestamp, user_deleted = :user_deleted  WHERE user_id = :user_id LIMIT 1");
+        $query = $database->prepare("UPDATE users SET user_suspension_timestamp = :user_suspension_timestamp, user_deleted = :user_deleted  WHERE user_id = :user_id");
         $query->execute(array(
                 ':user_suspension_timestamp' => $suspensionTime,
                 ':user_deleted' => $delete,
@@ -81,7 +81,7 @@ class AdminModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("UPDATE users SET session_id = :session_id  WHERE user_id = :user_id LIMIT 1");
+        $query = $database->prepare("UPDATE users SET session_id = :session_id  WHERE user_id = :user_id ");
         $query->execute(array(
                 ':session_id' => null,
                 ':user_id' => $userId

@@ -140,7 +140,7 @@ class AvatarModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("UPDATE users SET user_has_avatar = TRUE WHERE user_id = :user_id LIMIT 1");
+        $query = $database->prepare("UPDATE users SET user_has_avatar = TRUE WHERE user_id = :user_id");
         $query->execute(array(':user_id' => $user_id));
     }
 
@@ -219,7 +219,7 @@ class AvatarModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sth = $database->prepare("UPDATE users SET user_has_avatar = 0 WHERE user_id = :user_id LIMIT 1");
+        $sth = $database->prepare("UPDATE users SET user_has_avatar = 0 WHERE user_id = :user_id");
         $sth->bindValue(":user_id", (int)$userId, PDO::PARAM_INT);
         $sth->execute();
 

@@ -278,7 +278,7 @@ class RegistrationModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "UPDATE users SET user_active = 1, user_activation_hash = NULL
-                WHERE user_id = :user_id AND user_activation_hash = :user_activation_hash LIMIT 1";
+                WHERE user_id = :user_id AND user_activation_hash = :user_activation_hash";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_verification_code));
 

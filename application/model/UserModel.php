@@ -145,7 +145,7 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("UPDATE users SET user_name = :user_name WHERE user_id = :user_id LIMIT 1");
+        $query = $database->prepare("UPDATE users SET user_name = :user_name WHERE user_id = :user_id");
         $query->execute(array(':user_name' => $new_user_name, ':user_id' => $user_id));
         if ($query->rowCount() == 1) {
             return true;
@@ -165,7 +165,7 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("UPDATE users SET user_email = :user_email WHERE user_id = :user_id LIMIT 1");
+        $query = $database->prepare("UPDATE users SET user_email = :user_email WHERE user_id = :user_id");
         $query->execute(array(':user_email' => $new_user_email, ':user_id' => $user_id));
         $count = $query->rowCount();
         if ($count == 1) {
