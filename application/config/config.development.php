@@ -132,6 +132,7 @@ return array(
      * EMAIL_USE_SMTP: Use SMTP or not
      * EMAIL_SMTP_AUTH: leave this true unless your SMTP service does not need authentication
      */
+    'EMAIL_ENABLED' => false,
     'EMAIL_USED_MAILER' => 'phpmailer',
     'EMAIL_USE_SMTP' => false,
     'EMAIL_SMTP_HOST' => 'yourhost',

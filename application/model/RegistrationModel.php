@@ -55,7 +55,7 @@ class RegistrationModel
 
         // write user data to database
         if (!self::writeNewUserToDatabase($user_name, $user_password_hash, $user_email, time(), $user_activation_hash)) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
+            Session::add('feedback_negative', "DB problem");
             return false; // no reason not to return false here
         }
 
@@ -67,15 +67,20 @@ class RegistrationModel
             return false;
         }
 
-        // send verification email
-        if (self::sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
+        // send verification email if enabled
+        if (Config::get('EMAIL_ENABLED') and self::sendVerificationEmail($user_id, $user_email, $user_activation_hash)){
+            Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
+            return true;
+        }
+
+        if (!Config::get('EMAIL_ENABLED')) {
             Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
             return true;
         }
 
         // if verification email sending failed: instantly delete the user
         self::rollbackRegistrationByUserId($user_id);
-        Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_FAILED'));
+        Session::add('feedback_negative', "Olls folsch");
         return false;
     }
 
