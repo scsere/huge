@@ -5,4 +5,5 @@
 .idea/
 # don't commit all the dependencies fetched via Composer
 /vendor/
+/public/avatars/
 composer.lock
