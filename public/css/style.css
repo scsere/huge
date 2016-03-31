@@ -151,6 +151,10 @@ body {
     color: #ff7272;
     background-color: #ffe5e5;
 }
+.feedback.warning {
+    color: #ffbb04;
+    background-color: rgba(255, 185, 4, 0.26);
+}
 .feedback.info {
     color: #00529B;
     background-color: #BDE5F8;
