@@ -16,5 +16,14 @@
         "psr-4": { "": ["application/core/", "application/model/"] }
     },
     "require": {
+        "twbs/bootstrap": "^3.3"
+    },
+    "scripts": {
+        "update-bootstrap": [
+          "rm --force public/js/bootstrap.min.js",
+          "rm --force public/css/bootstrap.min.css",
+          "cp vendor/twbs/bootstrap/dist/js/bootstrap.min.js public/js/bootstrap.min.js",
+          "cp vendor/twbs/bootstrap/dist/css/bootstrap.min.css public/css/bootstrap.min.css"
+        ]
     }
 }
