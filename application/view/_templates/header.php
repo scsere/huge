@@ -7,7 +7,12 @@
     <!-- send empty favicon fallback to prevent user's browser hitting the server for lots of favicon requests resulting in 404s -->
     <link rel="icon" href="data:;base64,=">
     <!-- CSS -->
+    <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
+
+    <!-- JS -->
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/jquery-2.2.2.min.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js"></script>
 </head>
 <body>
     <!-- wrapper, to center website -->
