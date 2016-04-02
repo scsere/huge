@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Viktor Gobbi
@@ -7,26 +8,33 @@
  * Project: huge
  * File: Head.php
  */
-
 class Head
 {
-    public static function getTitle(){
+    // Title
+
+    public static function getTitle()
+    {
         $title = Session::get('head_title');
         if (isset($title) && !empty($title))
             return $title;
         else
             return Config::get('DEFAULT_HEAD_TITLE');
     }
-    
-    public static function setTitle($title){
+
+    public static function setTitle($title)
+    {
         Session::set('head_title', $title);
     }
 
-    public static function resetTitleToDefault(){
+    public static function resetTitleToDefault()
+    {
         Session::set('head_title', null);
     }
-    
-    public static function getIcon(){
+
+    // Icon
+
+    public static function getIcon()
+    {
         $icon = Session::get('head_icon');
         if (isset($icon) && !empty($icon))
             return $icon;
@@ -34,15 +42,21 @@ class Head
             return Config::get('DEFAULT_HEAD_ICON');
     }
 
-    public static function setIcon($icon){
+    public static function setIcon($icon)
+    {
         Session::set('head_icon', $icon);
     }
 
-    public static function resetIconToDefault(){
+    public static function resetIconToDefault()
+    {
         Session::set('head_icon', null);
     }
-    
-    public static function resetHeaderToDefault(){
+
+    /**
+     * Resets all overwritten values back to the default specified in the config file.
+     */
+    public static function resetHeaderToDefault()
+    {
         self::resetTitleToDefault();
         self::resetIconToDefault();
     }
