@@ -38,19 +38,27 @@ return array(
      * Configuration for: Folders
      * Usually there's no reason to change this.
      */
-    'PATH_CONTROLLER' => realpath(dirname(__FILE__).'/../../') . '/application/controller/',
-    'PATH_VIEW' => realpath(dirname(__FILE__).'/../../') . '/application/view/',
+    'PATH_CONTROLLER' => realpath(dirname(__FILE__) . '/../../') . '/application/controller/',
+    'PATH_VIEW' => realpath(dirname(__FILE__) . '/../../') . '/application/view/',
     /**
      * Configuration for: Avatar paths
      * Internal path to save avatars. Make sure this folder is writable. The slash at the end is VERY important!
      */
-    'PATH_AVATARS' => realpath(dirname(__FILE__).'/../../') . '/public/avatars/',
+    'PATH_AVATARS' => realpath(dirname(__FILE__) . '/../../') . '/public/avatars/',
     'PATH_AVATARS_PUBLIC' => 'avatars/',
     /**
      * Configuration for: Default controller and action
      */
     'DEFAULT_CONTROLLER' => 'index',
     'DEFAULT_ACTION' => 'index',
+    /**
+     * Configuration for: default html head
+     * DEFAULT_HEAD_TITLE   The default page title
+     * DEFAULT_HEAD_ICON    The default icon (send empty favicon fallback to prevent user's 
+     * browser hitting the server for lots of favicon requests resulting in 404s)
+     */
+    'DEFAULT_HEAD_TITLE' => "HUGE",
+    'DEFAULT_HEAD_ICON' => "data:;base64,=",
     /**
      * Configuration for: Database
      * DB_TYPE The used database type. Note that other types than "mysql" might break the db construction currently.
