@@ -34,8 +34,8 @@ class Head
             return Config::get('DEFAULT_HEAD_ICON');
     }
 
-    public static function setIcon($title){
-        Session::set('head_icon', $title);
+    public static function setIcon($icon){
+        Session::set('head_icon', $icon);
     }
 
     public static function resetIconToDefault(){
