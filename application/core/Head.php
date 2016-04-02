@@ -54,9 +54,58 @@ class Head
 
     // Meta tags
 
-    public static function getMetaTags(){
-        return Config::get('DEFAULT_HEAD_META');
+    public static function getMetaTags()
+    {
+        $defaultTags = (array)Config::get('DEFAULT_HEAD_META');
+        if (!empty(Session::get('head_metas')))
+            $defaultTags = array_merge($defaultTags, Session::get('head_metas'));
+        if (!empty(Session::get('head_metas_perm')))
+            $defaultTags = array_merge($defaultTags, Session::get('head_metas_perm'));
+        return $defaultTags;
     }
+
+    public static function setMetaTags($tags)
+    {
+        if (!is_array($tags))
+            $tags = array($tags);
+        Session::set('head_metas', $tags);
+    }
+
+    public static function addMetaTags($tags)
+    {
+        if (empty(Session::get('head_metas')))
+            return self::setMetaTags($tags);
+        if (!is_array($tags))
+            $tags = array($tags);
+        Session::set('head_metas', array_merge(Session::get('head_metas'), $tags));
+    }
+
+    public static function resetMetaTags()
+    {
+        Session::set('head_metas', null);
+    }
+
+    public static function setPermanentMetaTags($tags)
+    {
+        if (!is_array($tags))
+            $tags = array($tags);
+        Session::set('head_metas_perm', $tags);
+    }
+
+    public static function addPermanentMetaTags($tags)
+    {
+        if (empty(Session::get('head_metas_perm')))
+            return self::setPermanentMetaTags($tags);
+        if (!is_array($tags))
+            $tags = array($tags);
+        Session::set('head_metas_perm', array_merge(Session::get('head_metas_perm'), $tags));
+    }
+
+    public static function resetPermanentMetaTags()
+    {
+        Session::set('head_metas_perm', null);
+    }
+
 
     /**
      * Resets all overwritten values back to the default specified in the config file.
@@ -65,5 +114,6 @@ class Head
     {
         self::resetTitleToDefault();
         self::resetIconToDefault();
+        self::resetMetaTags();
     }
 }
