@@ -52,6 +52,12 @@ class Head
         Session::set('head_icon', null);
     }
 
+    // Meta tags
+
+    public static function getMetaTags(){
+        return Config::get('DEFAULT_HEAD_META');
+    }
+
     /**
      * Resets all overwritten values back to the default specified in the config file.
      */

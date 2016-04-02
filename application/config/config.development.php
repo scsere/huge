@@ -59,6 +59,10 @@ return array(
      */
     'DEFAULT_HEAD_TITLE' => "HUGE",
     'DEFAULT_HEAD_ICON' => "data:;base64,=",
+    'DEFAULT_HEAD_META' => [
+        'charset="utf-8"', 
+        'name="description" content="Huge"'
+    ],
     /**
      * Configuration for: Database
      * DB_TYPE The used database type. Note that other types than "mysql" might break the db construction currently.

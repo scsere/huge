@@ -3,7 +3,9 @@
 <head>
     <title><?php echo Head::getTitle(); ?></title>
     <!-- META -->
-    <meta charset="utf-8">
+<?php foreach (Head::getMetaTags() as $metaTag):?>
+    <meta <?php echo $metaTag; ?>>
+<?php endforeach;?>
     <!-- send empty favicon fallback to prevent user's browser hitting the server for lots of favicon requests resulting in 404s -->
     <link rel="icon" href="<?php echo Head::getIcon();?>">
     <!-- CSS -->
