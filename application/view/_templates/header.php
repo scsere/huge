@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
 <head>
-    <title>HUGE</title>
+    <title><?php echo Head::getTitle(); ?></title>
     <!-- META -->
     <meta charset="utf-8">
     <!-- send empty favicon fallback to prevent user's browser hitting the server for lots of favicon requests resulting in 404s -->
-    <link rel="icon" href="data:;base64,=">
+    <link rel="icon" href="<?php echo Head::getIcon();?>">
     <!-- CSS -->
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
 </head>

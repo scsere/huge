@@ -24,6 +24,7 @@ class View
         require Config::get('PATH_VIEW') . '_templates/header.php';
         require Config::get('PATH_VIEW') . $filename . '.php';
         require Config::get('PATH_VIEW') . '_templates/footer.php';
+        Head::resetHeaderToDefault();
     }
 
     /**
@@ -53,6 +54,7 @@ class View
         }
 
         require Config::get('PATH_VIEW') . '_templates/footer.php';
+        Head::resetHeaderToDefault();
     }
 
     /**
