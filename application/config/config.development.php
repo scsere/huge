@@ -54,13 +54,13 @@ return array(
     /**
      * Configuration for: default html head
      * DEFAULT_HEAD_TITLE   The default page title
-     * DEFAULT_HEAD_ICON    The default icon (send empty favicon fallback to prevent user's 
+     * DEFAULT_HEAD_ICON    The default icon (send empty favicon fallback to prevent user's
      * browser hitting the server for lots of favicon requests resulting in 404s)
      */
     'DEFAULT_HEAD_TITLE' => "HUGE",
     'DEFAULT_HEAD_ICON' => "data:;base64,=",
     'DEFAULT_HEAD_META' => [
-        'charset="utf-8"', 
+        'charset="utf-8"',
         'name="description" content="Huge"'
     ],
     /**
@@ -83,8 +83,16 @@ return array(
     /**
      * Configuration for: Google analytics
      */
-    'GA_ENABLED' => false    ,
+    'GA_ENABLED' => false,
     'GA_TRACKING_ID' => 'yourtrackingid',
+    /**
+     * Configuration for: Google ReCaptcha
+     * To register your site visit: https://www.google.com/recaptcha/admin
+     */
+    'RECAPTCHA_ENABLED' => false,
+    'RECAPTCHA_LANG' => 'en',
+    'RECAPTCHA_SITE_KEY' => 'yourReCaptchaSiteKey',
+    'RECAPTCHA_SECRET_KEY' => 'yourReCaptchaSecretKey',
     /**
      * Configuration for: Captcha size
      * The currently used Captcha generator (https://github.com/Gregwar/Captcha) also runs without giving a size,
@@ -150,6 +158,7 @@ return array(
      * EMAIL_SMTP_AUTH: leave this true unless your SMTP service does not need authentication
      */
     'EMAIL_ENABLED' => false,
+
     'EMAIL_USED_MAILER' => 'phpmailer',
     'EMAIL_USE_SMTP' => false,
     'EMAIL_SMTP_HOST' => 'yourhost',

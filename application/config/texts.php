@@ -35,6 +35,7 @@ return array(
     "FEEDBACK_EMAIL_SAME_AS_OLD_ONE" => "Sorry, that email address is the same as your current one. Please choose another one.",
     "FEEDBACK_EMAIL_CHANGE_SUCCESSFUL" => "Your email address has been changed successfully.",
     "FEEDBACK_CAPTCHA_WRONG" => "The entered captcha security characters were wrong.",
+    "FEEDBACK_RECAPTCHA_WRONG" => "The reCaptcha failed.",
     "FEEDBACK_PASSWORD_REPEAT_WRONG" => "Password and password repeat are not the same.",
     "FEEDBACK_PASSWORD_TOO_SHORT" => "Password has a minimum length of 6 characters.",
     "FEEDBACK_USERNAME_TOO_SHORT_OR_TOO_LONG" => "Username cannot be shorter than 2 or longer than 64 characters.",
