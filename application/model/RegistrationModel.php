@@ -55,7 +55,7 @@ class RegistrationModel
 
         // write user data to database
         if (!self::writeNewUserToDatabase($user_name, $user_password_hash, $user_email, time(), $user_activation_hash)) {
-            Session::add('feedback_negative', "DB problem");
+            Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
             return false; // no reason not to return false here
         }
 
@@ -80,7 +80,7 @@ class RegistrationModel
 
         // if verification email sending failed: instantly delete the user
         self::rollbackRegistrationByUserId($user_id);
-        Session::add('feedback_negative', "Olls folsch");
+        Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_FAILED'));
         return false;
     }
 
