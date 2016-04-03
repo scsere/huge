@@ -1,6 +1,6 @@
 [![HUGE, formerly "php-login" logo](_pictures/huge-logo.png)](http://www.php-login.net)
 
-### This fork is modified to use a postgres instead of a MySQL database
+### This fork is modified to use a postgres instead of a MySQL database and support google analytics and reCaptcha
 
 # HUGE
 
