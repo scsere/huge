@@ -75,11 +75,16 @@ return array(
      */
     'DB_TYPE' => 'pgsql',
     'DB_HOST' => '127.0.0.1',
-    'DB_NAME' => 'huge',
-    'DB_USER' => 'huge',
+    'DB_NAME' => 'db',
+    'DB_USER' => 'user',
     'DB_PASS' => 'password',
     'DB_PORT' => '5432',
     'DB_CHARSET' => 'utf8',
+    /**
+     * Configuration for: Google analytics
+     */
+    'GA_ENABLED' => false    ,
+    'GA_TRACKING_ID' => 'yourtrackingid',
     /**
      * Configuration for: Captcha size
      * The currently used Captcha generator (https://github.com/Gregwar/Captcha) also runs without giving a size,
