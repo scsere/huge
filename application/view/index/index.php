@@ -1,6 +1,6 @@
 <div class="container">
     <h1>IndexController/index</h1>
-    <div class="box">
+    <div>
 
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
