@@ -1,10 +1,6 @@
 <div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <!-- echo out the system feedback (error and success messages) -->
-            <?php $this->renderFeedbackMessages(); ?>
-        </div>
-    </div>
+    <!-- echo out the system feedback (error and success messages) -->
+    <?php $this->renderFeedbackMessages(); ?>
 
     <div class="row">
         <!-- login box on left side -->
