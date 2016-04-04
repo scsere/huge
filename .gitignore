@@ -7,3 +7,4 @@
 /vendor/
 /public/avatars/
 composer.lock
+config.production.php
