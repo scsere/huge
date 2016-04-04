@@ -3,12 +3,11 @@
         <h1>Admin/index</h1>
     </div>
 
+    <!-- echo out the system feedback (error and success messages) -->
+    <?php $this->renderFeedbackMessages(); ?>
+    
     <div class="row">
         <div class="col-lg-12">
-
-            <!-- echo out the system feedback (error and success messages) -->
-            <?php $this->renderFeedbackMessages(); ?>
-
             <h3>What happens here ?</h3>
 
             <div>
