@@ -15,6 +15,10 @@ class ErrorController extends Controller
         parent::__construct();
     }
 
+    public function index(){
+        $this->error404();
+    }
+
     /**
      * Use this when something is not found. Gives back a proper 404 header response plus a normal page (where you could
      * show a well-designed error message or something more useful for your users).
