@@ -80,7 +80,7 @@ class LoginController extends Controller
     public function loginWithCookie()
     {
         // run the loginWithCookie() method in the login-model, put the result in $login_successful (true or false)
-         $login_successful = LoginModel::loginWithCookie(Request::cookie('remember_me'));
+        $login_successful = LoginModel::loginWithCookie(Request::cookie('remember_me'));
 
         // if login successful, redirect to dashboard/index ...
         if ($login_successful) {
@@ -97,6 +97,11 @@ class LoginController extends Controller
      */
     public function requestPasswordReset()
     {
+        //Check if   email api is enabled
+        if (!Config::get('EMAIL_ENABLED')) {
+            Redirect::to('error/');
+            die();
+        }
         $this->View->render('login/requestPasswordReset');
     }
 
@@ -106,6 +111,13 @@ class LoginController extends Controller
      */
     public function requestPasswordReset_action()
     {
+        //Check if email api is enabled
+        if (!Config::get('EMAIL_ENABLED')) {
+            Redirect::to('error/');
+            die();
+        }
+        if (!Config::get('EMAIL_ENABLED'))
+            Redirect::to('error/');
         PasswordResetModel::requestPasswordReset(Request::post('user_name_or_email'), Request::post('captcha'));
         Redirect::to('login/index');
     }
