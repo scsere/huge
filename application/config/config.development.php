@@ -64,6 +64,17 @@ return array(
         'name="description" content="Huge"'
     ],
     /**
+     * Configuration for: two factor auth
+     */
+    'TWO_FACTOR_AUTH_ENABLED' => true,
+    'TWO_FACTOR_AUTH_GENERATE_QR' => true,
+    'TWO_FACTOR_AUTH_GENERATE_SCRATCH_CODES' => true,
+    'TWO_FACTOR_AUTH_SECRET_DIGITS' => 30,
+    'TWO_FACTOR_AUTH_SCRATCH_CODES_COUNT' => 10,
+    'TWO_FACTOR_AUTH_VALID_PERIOD' => 30,
+    'TWO_FACTOR_AUTH_ALGORITHM' => 'sha1',
+    'TWO_FACTOR_AUTH_DIGITS' => 6,
+    /**
      * Configuration for: Database
      * DB_TYPE The used database type. Note that other types than "mysql" might break the db construction currently.
      * DB_HOST The mysql hostname, usually localhost or 127.0.0.1
