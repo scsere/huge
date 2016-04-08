@@ -41,7 +41,7 @@ class LoginModel
 
         // stop the user from logging in if user has a suspension, display how long they have left in the feedback.
         if ($result->user_suspension_timestamp != null && $result->user_suspension_timestamp - time() > 0) {
-            $suspensionTimer = Text::get('FEEDBACK_ACCOUNT_SUSPENDED') . round(abs($result->user_suspension_timestamp - time())/60/60, 2) . " hours left";
+            $suspensionTimer = Text::get('FEEDBACK_ACCOUNT_SUSPENDED') . round(abs($result->user_suspension_timestamp - time()) / 60 / 60, 2) . " hours left";
             Session::add('feedback_negative', $suspensionTimer);
             return false;
         }
@@ -68,6 +68,69 @@ class LoginModel
         // maybe do this in dependence of setSuccessfulLoginIntoSession ?
         return true;
     }
+
+    public static function twoFactorLogin($user_name, $user_password, $token, $set_remember_me_cookie = null)
+    {
+
+
+        // we do negative-first checks here, for simplicity empty username and empty password in one line
+        if (empty($user_name) OR empty($user_password)) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_OR_PASSWORD_FIELD_EMPTY'));
+            return false;
+        }
+
+        // checks if user exists, if login is not blocked (due to failed logins) and if password fits the hash
+        $result = self::validateAndGetUser($user_name, $user_password);
+
+
+        // check if that user exists. We don't give back a cause in the feedback to avoid giving an attacker details.
+        if (!$result) {
+            //No Need to give feedback here since whole validateAndGetUser controls gives a feedback
+            return false;
+        }
+
+        $result_totp = self::validateTotp($result->user_id, $token);
+
+        if (!$result_totp) {
+            return false;
+        }
+
+        // stop the user's login if account has been soft deleted
+        if ($result->user_deleted == 1) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_DELETED'));
+            return false;
+        }
+
+        // stop the user from logging in if user has a suspension, display how long they have left in the feedback.
+        if ($result->user_suspension_timestamp != null && $result->user_suspension_timestamp - time() > 0) {
+            $suspensionTimer = Text::get('FEEDBACK_ACCOUNT_SUSPENDED') . round(abs($result->user_suspension_timestamp - time()) / 60 / 60, 2) . " hours left";
+            Session::add('feedback_negative', $suspensionTimer);
+            return false;
+        }
+
+        // reset the failed login counter for that user (if necessary)
+        if ($result->user_last_failed_login > 0) {
+            self::resetFailedLoginCounterOfUser($result->user_name);
+        }
+
+        // save timestamp of this login in the database line of that user
+        self::saveTimestampOfLoginOfUser($result->user_name);
+
+        // if user has checked the "remember me" checkbox, then write token into database and into cookie
+        if ($set_remember_me_cookie) {
+            self::setRememberMeInDatabaseAndCookie($result->user_id);
+        }
+
+        // successfully logged in, so we write all necessary data into the session and set "user_logged_in" to true
+        self::setSuccessfulLoginIntoSession(
+            $result->user_id, $result->user_name, $result->user_email, $result->user_account_type
+        );
+
+        // return true to make clear the login was successful
+        // maybe do this in dependence of setSuccessfulLoginIntoSession ?
+        return true;
+    }
+
 
     /**
      * Validates the inputs of the users, checks if password is correct etc.
@@ -166,7 +229,7 @@ class LoginModel
         }
 
         // before list(), check it can be split into 3 strings.
-        if (count (explode(':', $cookie)) !== 3) {
+        if (count(explode(':', $cookie)) !== 3) {
             Session::add('feedback_negative', Text::get('FEEDBACK_COOKIE_INVALID'));
             return false;
         }
@@ -276,7 +339,7 @@ class LoginModel
                    SET user_failed_logins = user_failed_logins+1, user_last_failed_login = :user_last_failed_login
                  WHERE user_name = :user_name OR user_email = :user_name";
         $sth = $database->prepare($sql);
-        $sth->execute(array(':user_name' => $user_name, ':user_last_failed_login' => time() ));
+        $sth->execute(array(':user_name' => $user_name, ':user_last_failed_login' => time()));
     }
 
     /**
@@ -332,8 +395,8 @@ class LoginModel
         // generate cookie string that consists of user id, random string and combined hash of both
         // never expose the original user id, instead, encrypt it.
         $cookie_string_first_part = Encryption::encrypt($user_id) . ':' . $random_token_string;
-        $cookie_string_hash       = hash('sha256', $user_id . ':' . $random_token_string);
-        $cookie_string            = $cookie_string_first_part . ':' . $cookie_string_hash;
+        $cookie_string_hash = hash('sha256', $user_id . ':' . $random_token_string);
+        $cookie_string = $cookie_string_first_part . ':' . $cookie_string_hash;
 
         // set cookie, and make it available only for the domain created on (to avoid XSS attacks, where the
         // attacker could steal your remember-me cookie string and would login itself).
@@ -376,5 +439,26 @@ class LoginModel
     public static function isUserLoggedIn()
     {
         return Session::userIsLoggedIn();
+    }
+
+    public static function isUserUsingTwoFactorLogin($user_name)
+    {
+        $user_id = UserModel::getUserIdByUsername($user_name);
+        if (empty($user_name))
+            return false;
+        return UserModel::hasUserTowFactorAuthEnabled($user_id);
+    }
+
+    private static function validateTotp($user_id, $token)
+    {
+        //Check if token length is correct
+        if (strlen($token) != Config::get('TWO_FACTOR_AUTH_DIGITS') && strlen($token) != Config::get('TWO_FACTOR_AUTH_SCRATCH_CODES_DIGITS'))
+            return false;
+        //If it's a normal TOTP token or a scratch code
+        if (strlen($token) == Config::get('TWO_FACTOR_AUTH_DIGITS') && TwoFactorAuthModel::verifyToken($user_id, $token) ||
+            strlen($token) == Config::get('TWO_FACTOR_AUTH_SCRATCH_CODES_DIGITS') && TwoFactorAuthModel::verifyScratchCode($user_id, $token))
+            return true;
+        Feedback::addNegative(Text::get('FEEDBACK_USERNAME_OR_PASSWORD_WRONG'));
+        return false;
     }
 }
