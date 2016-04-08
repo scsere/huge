@@ -26,6 +26,8 @@ class LoginController extends Controller
             Redirect::home();
         } else {
             $data = array('redirect' => Request::get('redirect') ? Request::get('redirect') : NULL);
+            if (!empty(Session::get('user_login_name')) && !empty(Session::get('user_login_password')))
+                Redirect::to('login/tokenLogin');
             $this->View->render('login/index', $data);
         }
     }
@@ -42,11 +44,83 @@ class LoginController extends Controller
             exit();
         }
 
+        // Check if tow factor auth is enabled and if the user trying to log in is using it
+        if (Config::get('TWO_FACTOR_AUTH_ENABLED') && LoginModel::isUserUsingTwoFactorLogin(Request::post('user_name')))
+            $this->tokenLogin();
+        else
+            $this->usernameLogin();
+
+    }
+
+    public function tokenLogin()
+    {
+        if (!empty(Request::post("user_name")) && !empty("user_password")) {
+            Session::set('user_login_name', Request::post("user_name"));
+            Session::set('user_login_password', Request::post("user_password"));
+            Session::set('user_login_timestamp', time());
+            Session::set('set_remember_me_cookie', Request::post("set_remember_me_cookie"));
+            $this->View->render('login/twoFactorAuth', array('timestamp' => Session::get('user_login_timestamp')));
+            exit();
+        } elseif (!empty(Session::get('user_login_name')) && !empty(Session::get('user_login_password')) && LoginModel::loginTimestampValid()) {
+            $this->View->render('login/twoFactorAuth', array('timestamp' => Session::get('user_login_timestamp')));
+            exit();
+        }
+        LoginModel::logout();
+        Redirect::to("login");
+    }
+
+    public function tokenLogin_action()
+    {
+        // check if csrf token is valid
+        if (!Csrf::isTokenValid()) {
+            LoginModel::logout();
+            Redirect::home();
+            exit();
+        }
+
+        $user_name = Session::get('user_login_name');
+        $user_password = Session::get('user_login_password');
+        $login_timestamp = Session::get('user_login_timestamp');
+        Session::set('user_login_name', null);
+        Session::set('user_login_password', null);
+        Session::set('user_login_timestamp', null);
+        if (!LoginModel::loginTimestampValid($login_timestamp)) {
+            LoginModel::logout();
+            Session::init();
+            Feedback::addNegative("Login timed out!");//TODO feedback text
+            Redirect::to('login');
+            exit();
+        }
+        if (empty($user_name) || empty($user_password) || empty(Request::post('token'))) {
+            LoginModel::logout();
+            Redirect::home();
+            exit();
+        }
+
+        $login_successful = LoginModel::twoFactorLogin($user_name, $user_password, Request::post('token'), Session::get('set_remember_me_cookie'));
+        Session::set('set_remember_me_cookie', null);
+        $this->finishLogin($login_successful);
+    }
+
+    public function cancelTokenLogin()
+    {
+        LoginModel::logout();
+        Redirect::to('login');
+        exit();
+    }
+
+    private function usernameLogin()
+    {
         // perform the login method, put result (true or false) into $login_successful
         $login_successful = LoginModel::login(
             Request::post('user_name'), Request::post('user_password'), Request::post('set_remember_me_cookie')
         );
 
+        $this->finishLogin($login_successful);
+    }
+
+    private function finishLogin($login_successful)
+    {
         // check login status: if true, then redirect user to user/index, if false, then to login form again
         if ($login_successful) {
             if (Request::post('redirect')) {
