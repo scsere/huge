@@ -1,29 +1,28 @@
 <div class="container">
-    <h1>Request a password reset</h1>
-    <div class="box">
-
-        <!-- echo out the system feedback (error and success messages) -->
-        <?php $this->renderFeedbackMessages(); ?>
-
-        <!-- request password reset form box -->
-        <form method="post" action="<?php echo Config::get('URL'); ?>login/requestPasswordReset_action">
-            <label for="user_name_or_email">
-                Enter your username or email and you'll get a mail with instructions:
-                <input type="text" name="user_name_or_email" required />
-            </label>
-
-            <?= Captcha::getCaptchaHtml() ?>
-
-            <input type="submit" value="Send me a password-reset mail" />
-        </form>
-
+    <div class="page-header">
+        <h1>Request a password reset</h1>
     </div>
-</div>
-<div class="container">
-    <p style="display: block; font-size: 11px; color: #999;">
-        Please note: This captcha will be generated when the img tag requests the captcha-generation
-        (= a real image) from YOURURL/register/showcaptcha. As this is a client-side triggered request, a
-        $_SESSION["captcha"] dump will not show the captcha characters. The captcha generation
-        happens AFTER the request that generates THIS page has been finished.
-    </p>
+
+    <!-- echo out the system feedback (error and success messages) -->
+    <?php $this->renderFeedbackMessages(); ?>
+
+    <div class="box">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <!-- request password reset form box -->
+                    <form method="post" action="<?php echo Config::get('URL'); ?>login/requestPasswordReset_action">
+                        <div class="form-group">
+                            <label for="user_name_or_email"> Enter your username or email and you'll get a mail with
+                                instructions: </label>
+                            <input type="text" class="form-control" name="user_name_or_email" id="user_name_or_email"
+                                   required/>
+                        </div>
+                        <?= Captcha::getCaptchaHtml() ?>
+                        <input type="submit" class="btn btn-primary" value="Send me a password-reset mail"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
