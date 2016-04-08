@@ -340,4 +340,13 @@ class UserModel
         // return one row (we only have one result or nothing)
         return $query->fetch();
     }
+    
+    public static function hasUserTowFactorAuthEnabled($user_id){
+        $database = DatabaseFactory::getFactory()->getConnection();
+        
+        $query = $database->prepare("SELECT tenabled FROM totp WHERE user_id = :user_id");
+        $query->execute(array(':user_id' => $user_id));
+        
+        return $query->rowCount() > 0 && $query->fetch()->tenabled == true;
+    }
 }
