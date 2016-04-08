@@ -67,6 +67,7 @@ return array(
      * Configuration for: two factor auth
      */
     'TWO_FACTOR_AUTH_ENABLED' => true,
+    'TWO_FACTOR_AUTH_TIMEOUT' => 120,
     'TWO_FACTOR_AUTH_GENERATE_QR' => true,
     'TWO_FACTOR_AUTH_QR_LABEL' => "Huge two factor auth",
     'TWO_FACTOR_AUTH_QR_ISSUER' => "Huge",
