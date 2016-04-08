@@ -449,6 +449,17 @@ class LoginModel
         return UserModel::hasUserTowFactorAuthEnabled($user_id);
     }
 
+    public static function loginTimestampValid($timestamp = null)
+    {
+        if (empty(Session::get('user_login_timestamp')) && empty($timestamp))
+            return false;
+        if (time() - Session::get('user_login_timestamp') <= Config::get('TWO_FACTOR_AUTH_TIMEOUT'))
+            return true;
+        if (time() - $timestamp <= Config::get('TWO_FACTOR_AUTH_TIMEOUT'))
+            return true;
+        return false;
+    }
+
     private static function validateTotp($user_id, $token)
     {
         //Check if token length is correct
@@ -456,7 +467,8 @@ class LoginModel
             return false;
         //If it's a normal TOTP token or a scratch code
         if (strlen($token) == Config::get('TWO_FACTOR_AUTH_DIGITS') && TwoFactorAuthModel::verifyToken($user_id, $token) ||
-            strlen($token) == Config::get('TWO_FACTOR_AUTH_SCRATCH_CODES_DIGITS') && TwoFactorAuthModel::verifyScratchCode($user_id, $token))
+            strlen($token) == Config::get('TWO_FACTOR_AUTH_SCRATCH_CODES_DIGITS') && TwoFactorAuthModel::verifyScratchCode($user_id, $token)
+        )
             return true;
         Feedback::addNegative(Text::get('FEEDBACK_USERNAME_OR_PASSWORD_WRONG'));
         return false;
